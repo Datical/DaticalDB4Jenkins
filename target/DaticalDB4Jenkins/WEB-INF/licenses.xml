@@ -1,0 +1,5 @@
+<l:dependencies xmlns:l='licenses' groupId='com.datical.integration.jenkins' artifactId='DaticalDB4Jenkins' version='1.0-SNAPSHOT'>
+  <l:dependency name='DaticalDB4Jenkins' groupId='com.datical.integration.jenkins' artifactId='DaticalDB4Jenkins' version='1.0-SNAPSHOT' url='http://jenkins-ci.org/plugin/DaticalDB4Jenkins/'>
+    <l:description />
+  </l:dependency>
+</l:dependencies>

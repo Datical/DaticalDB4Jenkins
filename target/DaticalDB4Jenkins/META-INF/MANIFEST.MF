@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Built-By: r2
+Created-By: Apache Maven
+Build-Jdk: 1.7.0_07
+Extension-Name: DaticalDB4Jenkins
+Implementation-Title: DaticalDB4Jenkins
+Implementation-Version: 1.0-SNAPSHOT
+Group-Id: com.datical.integration.jenkins
+Short-Name: DaticalDB4Jenkins
+Long-Name: DaticalDB4Jenkins
+Url: http://jenkins-ci.org/plugin/DaticalDB4Jenkins/
+Plugin-Version: 1.0-SNAPSHOT (private-05/16/2013 16:51-r2)
+Hudson-Version: 1.480.3
+Jenkins-Version: 1.480.3
+Plugin-Developers: 
+
