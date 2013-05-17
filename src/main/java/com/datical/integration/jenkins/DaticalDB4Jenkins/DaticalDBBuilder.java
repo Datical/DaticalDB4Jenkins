@@ -21,7 +21,7 @@ import java.io.IOException;
  * <p>
  * When the user configures the project and enables this builder,
  * {@link DescriptorImpl#newInstance(StaplerRequest)} is invoked
- * and a new {@link HelloWorldBuilder} is created. The created
+ * and a new {@link DaticalDBBuilder} is created. The created
  * instance is persisted to the project configuration XML by using
  * XStream, so this allows you to use instance fields (like {@link #name})
  * to remember the configuration.
@@ -30,16 +30,25 @@ import java.io.IOException;
  * When a build is performed, the {@link #perform(AbstractBuild, Launcher, BuildListener)}
  * method will be invoked. 
  *
- * @author Kohsuke Kawaguchi
+ * @author <a href="mailto:info@datical.com">Robert Reeves</a>
  */
-public class HelloWorldBuilder extends Builder {
+public class DaticalDBBuilder extends Builder {
 
     private final String name;
+    
+    
+    private final String daticalProjectDir;
+    private final String daticalDBServer;
+    private final String daticalDBAction; // Forecast, Snapshot, Deploy, Rollback
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public HelloWorldBuilder(String name) {
+    public DaticalDBBuilder(String name, String daticalProjectDir, String daticalDBServer, String daticalDBAction) {
         this.name = name;
+        
+        this.daticalProjectDir = daticalProjectDir;
+        this.daticalDBServer = daticalDBServer;
+        this.daticalDBAction = daticalDBAction;
     }
 
     /**
@@ -49,7 +58,19 @@ public class HelloWorldBuilder extends Builder {
         return name;
     }
 
-    @Override
+    public String getDaticalProjectDir() {
+		return daticalProjectDir;
+	}
+
+	public String getDaticalDBServer() {
+		return daticalDBServer;
+	}
+
+	public String getDaticalDBAction() {
+		return daticalDBAction;
+	}
+
+	@Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
         // This is where you 'build' the project.
         // Since this is a dummy, we just say 'hello world' and call that a build.
@@ -59,6 +80,20 @@ public class HelloWorldBuilder extends Builder {
             listener.getLogger().println("Bonjour, "+name+"!");
         else
             listener.getLogger().println("Hello, "+name+"!");
+        
+        listener.getLogger().println("Global Config:");
+        
+        listener.getLogger().println("daticalDBInstallDir = " + getDescriptor().getDaticalDBInstallDir());
+        listener.getLogger().println("daticalDBDriversDir = " + getDescriptor().getDaticalDBDriversDir());        
+        
+        listener.getLogger().println("Project Specific Config:");
+        
+        listener.getLogger().println("daticalProjectDir = " + daticalProjectDir);
+        listener.getLogger().println("daticalProjectDir = " + daticalDBServer);
+        listener.getLogger().println("daticalProjectDir = " + daticalDBAction);
+        
+        
+        
         return true;
     }
 
@@ -71,11 +106,11 @@ public class HelloWorldBuilder extends Builder {
     }
 
     /**
-     * Descriptor for {@link HelloWorldBuilder}. Used as a singleton.
+     * Descriptor for {@link DaticalDBBuilder}. Used as a singleton.
      * The class is marked as public so that it can be accessed from views.
      *
      * <p>
-     * See <tt>src/main/resources/hudson/plugins/hello_world/HelloWorldBuilder/*.jelly</tt>
+     * See <tt>src/main/resources/hudson/plugins/hello_world/DaticalDBBuilder/*.jelly</tt>
      * for the actual HTML fragment for the configuration screen.
      */
     @Extension // This indicates to Jenkins that this is an implementation of an extension point.
@@ -88,6 +123,8 @@ public class HelloWorldBuilder extends Builder {
          * If you don't want fields to be persisted, use <tt>transient</tt>.
          */
         private boolean useFrench;
+        private String daticalDBInstallDir;
+        private String daticalDBDriversDir;
 
         /**
          * Performs on-the-fly validation of the form field 'name'.
@@ -115,7 +152,7 @@ public class HelloWorldBuilder extends Builder {
          * This human readable name is used in the configuration screen.
          */
         public String getDisplayName() {
-            return "Say hello world";
+            return "Datical DB";
         }
 
         @Override
@@ -123,6 +160,9 @@ public class HelloWorldBuilder extends Builder {
             // To persist global configuration information,
             // set that to properties and call save().
             useFrench = formData.getBoolean("useFrench");
+            daticalDBInstallDir = formData.getString("daticalDBInstallDir");
+            daticalDBDriversDir = formData.getString("daticalDBDriversDir");
+            
             // ^Can also use req.bindJSON(this, formData);
             //  (easier when there are many fields; need set* methods for this, like setUseFrench)
             save();
@@ -138,6 +178,16 @@ public class HelloWorldBuilder extends Builder {
         public boolean getUseFrench() {
             return useFrench;
         }
+
+		public String getDaticalDBInstallDir() {
+			return daticalDBInstallDir;
+		}
+
+		public String getDaticalDBDriversDir() {
+			return daticalDBDriversDir;
+		}
+        
+        
     }
 }
 

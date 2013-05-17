@@ -12,4 +12,22 @@
   <f:entry title="Name" field="name">
     <f:textbox />
   </f:entry>
+  
+  <f:entry title="Project Dir" field="daticalProjectDir">
+    <f:textbox />
+  </f:entry>
+  
+  <f:entry title="DB Server" field="daticalDBServer">
+    <f:textbox />
+  </f:entry>
+
+  <f:entry title="Action" name="daticalDBAction" field="daticalDBAction">
+  	<select name="daticalDBAction">
+        <option value="Forecast">Forecast</option>
+        <option value="Snapshot">Snapshot</option>
+        <option value="Snapshot">Deploy</option>
+        <option value="Snapshot">Rollback</option>
+    </select>
+  </f:entry>
+  
 </j:jelly>

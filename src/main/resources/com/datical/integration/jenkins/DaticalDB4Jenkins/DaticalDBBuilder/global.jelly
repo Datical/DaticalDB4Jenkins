@@ -11,10 +11,18 @@
     tags they use. Views are always organized according to its owner class,
     so it should be straightforward to find them.
   -->
-  <f:section title="Hello World Builder">
+  <f:section title="Datical DB">
     <f:entry title="French" field="useFrench"
       description="Check if we should say hello in French">
       <f:checkbox />
+    </f:entry>
+    <f:entry title="Installation Directory" field="daticalDBInstallDir"
+    	description="Absolute Path on Build Server to Datical DB Installation Directory">
+    	<f:textbox />
+    </f:entry>
+    <f:entry title="Database Drivers Directory" field="daticalDBDriversDir"
+    	description="Absolute Path on Build Server to Database Drivers used by Datical DB">
+    	<f:textbox />
     </f:entry>
   </f:section>
 </j:jelly>

@@ -12,7 +12,12 @@
   <triggers class="vector"/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <com.datical.integration.jenkins.DaticalDB4Jenkins.DaticalDBBuilder/>
+    <com.datical.integration.jenkins.DaticalDB4Jenkins.DaticalDBBuilder>
+      <name>some name</name>
+      <daticalProjectDir>C:\Users\r2\datical\MyDevelopmentProject</daticalProjectDir>
+      <daticalDBServer>Integration Dev</daticalDBServer>
+      <daticalDBAction>Forecast</daticalDBAction>
+    </com.datical.integration.jenkins.DaticalDB4Jenkins.DaticalDBBuilder>
   </builders>
   <publishers/>
   <buildWrappers/>
