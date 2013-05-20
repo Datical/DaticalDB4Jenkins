@@ -4,7 +4,20 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties/>
-  <scm class="hudson.scm.NullSCM"/>
+  <scm class="hudson.scm.SubversionSCM">
+    <locations>
+      <hudson.scm.SubversionSCM_-ModuleLocation>
+        <remote>https://r2-pc/svn/myrepos/MyDevelopmentProject</remote>
+        <local>.</local>
+      </hudson.scm.SubversionSCM_-ModuleLocation>
+    </locations>
+    <excludedRegions></excludedRegions>
+    <includedRegions></includedRegions>
+    <excludedUsers></excludedUsers>
+    <excludedRevprop></excludedRevprop>
+    <excludedCommitMessages></excludedCommitMessages>
+    <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+  </scm>
   <canRoam>true</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
@@ -12,12 +25,12 @@
   <triggers class="vector"/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <com.datical.integration.jenkins.DaticalDB4Jenkins.DaticalDBBuilder>
+    <com.datical.integration.jenkins.DaticalDBBuilder>
       <name>some name</name>
       <daticalProjectDir>C:\Users\r2\datical\MyDevelopmentProject</daticalProjectDir>
       <daticalDBServer>Integration Dev</daticalDBServer>
       <daticalDBAction>Forecast</daticalDBAction>
-    </com.datical.integration.jenkins.DaticalDB4Jenkins.DaticalDBBuilder>
+    </com.datical.integration.jenkins.DaticalDBBuilder>
   </builders>
   <publishers/>
   <buildWrappers/>

@@ -1,4 +1,4 @@
-package com.datical.integration.jenkins.DaticalDB4Jenkins;
+package com.datical.integration.jenkins;
 import hudson.Launcher;
 import hudson.Extension;
 import hudson.util.FormValidation;
