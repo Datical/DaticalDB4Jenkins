@@ -16,7 +16,7 @@
     <excludedUsers></excludedUsers>
     <excludedRevprop></excludedRevprop>
     <excludedCommitMessages></excludedCommitMessages>
-    <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+    <workspaceUpdater class="hudson.scm.subversion.CheckoutUpdater"/>
   </scm>
   <canRoam>true</canRoam>
   <disabled>false</disabled>

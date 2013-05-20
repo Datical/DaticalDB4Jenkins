@@ -1,6 +1,10 @@
 package com.datical.integration.jenkins;
+import hudson.EnvVars;
 import hudson.Launcher;
 import hudson.Extension;
+import hudson.Messages;
+import hudson.Util;
+import hudson.util.ArgumentListBuilder;
 import hudson.util.FormValidation;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
@@ -14,6 +18,8 @@ import org.kohsuke.stapler.QueryParameter;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Sample {@link Builder}.
@@ -33,6 +39,10 @@ import java.io.IOException;
  * @author <a href="mailto:info@datical.com">Robert Reeves</a>
  */
 public class DaticalDBBuilder extends Builder {
+	
+	
+	private static final Pattern WIN_ENV_VAR_REGEX = Pattern.compile("%([a-zA-Z0-9_]+)%");
+	private static final Pattern UNIX_ENV_VAR_REGEX = Pattern.compile("\\$([a-zA-Z0-9_]+)");
 
     private final String name;
     
@@ -72,6 +82,23 @@ public class DaticalDBBuilder extends Builder {
 
 	@Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
+		
+		
+//		C:\DaticalDB-1.1.0.201305141509\repl>C:\DaticalDB-1.1.0.201305141509\repl\hammer
+//		.bat --drivers="C:\DaticalDB-1.1.0.201305141509\drivers" --project="C:\Users\r2\
+//		datical\MyDeploymentProject" checkdrivers
+
+		String UNIX_SEP = "/";
+		String WINDOWS_SEP = "\\";
+		
+		String daticalCmd = getDescriptor().getDaticalDBInstallDir() + "\\repl\\hammer.bat";
+		String daticalDriversArg = "--drivers=" + getDescriptor().getDaticalDBDriversDir();
+		String daticalProjectArg = "--project=" + daticalProjectDir;
+		
+		String commandLine = daticalCmd + " " + daticalDriversArg + " " + daticalProjectArg + " " + "checkdrivers";
+		
+		
+		
         // This is where you 'build' the project.
         // Since this is a dummy, we just say 'hello world' and call that a build.
 
@@ -89,12 +116,76 @@ public class DaticalDBBuilder extends Builder {
         listener.getLogger().println("Project Specific Config:");
         
         listener.getLogger().println("daticalProjectDir = " + daticalProjectDir);
-        listener.getLogger().println("daticalProjectDir = " + daticalDBServer);
-        listener.getLogger().println("daticalProjectDir = " + daticalDBAction);
+        listener.getLogger().println("daticalDBServer = " + daticalDBServer);
+        listener.getLogger().println("daticalDBAction = " + daticalDBAction);
+        
+        listener.getLogger().println("build.getWorkspace().toString() = " + build.getWorkspace());
         
         
+        // possible actions
+//        Forecast
+//        Snapshot
+//        Deploy
+//        Rollback
+
         
-        return true;
+        
+
+        String cmdLine = convertSeparator(commandLine, (launcher.isUnix() ? UNIX_SEP : WINDOWS_SEP));
+        listener.getLogger().println("File separators sanitized: " + cmdLine);
+          
+        if (launcher.isUnix()) {
+          cmdLine = convertEnvVarsToUnix(cmdLine);
+        } else {
+          cmdLine = convertEnvVarsToWindows(cmdLine);
+        }
+        listener.getLogger().println("Environment variables sanitized: " + cmdLine);
+
+        ArgumentListBuilder args = new ArgumentListBuilder();
+        if (cmdLine != null) {
+          //args.addTokenized((launcher.isUnix() && executeFromWorkingDir) ? "./" + cmdLine : cmdLine);
+        	args.addTokenized((launcher.isUnix()) ? "./" + cmdLine : cmdLine);
+          listener.getLogger().println("Execute from working directory: " + args.toStringWithQuote());
+        }
+
+        if (!launcher.isUnix()) {
+          args = args.toWindowsCommand();
+          listener.getLogger().println("Windows command: " + args.toStringWithQuote());
+        }
+
+        EnvVars env = null;
+		try {
+			env = build.getEnvironment(listener);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        env.putAll(build.getBuildVariables());
+
+        listener.getLogger().println("Environment variables: " + env.entrySet().toString());
+        listener.getLogger().println("Command line: " + args.toStringWithQuote());
+        listener.getLogger().println("Working directory: " + build.getWorkspace());
+
+        try {
+          final int result = launcher.decorateFor(build.getBuiltOn()).launch().cmds(args).envs(env).stdout(listener).pwd(build.getWorkspace()).join();
+          return result == 0;
+        } catch (final IOException e) {
+          Util.displayIOException(e, listener);
+          final String errorMessage = "Command execution failed";
+          e.printStackTrace(listener.fatalError(errorMessage));
+          return false;
+        } catch (final InterruptedException e) {
+            final String errorMessage = "Command execution failed";
+            e.printStackTrace(listener.fatalError(errorMessage));
+            return false;
+		}
+
+        
+        
+        //return true;
     }
 
     // Overridden for better type safety.
@@ -189,5 +280,73 @@ public class DaticalDBBuilder extends Builder {
         
         
     }
+    
+    public static String convertSeparator(String cmdLine, String newSeparator) {
+        String match = "[/" + Pattern.quote("\\") + "]";
+        String replacement = Matcher.quoteReplacement(newSeparator);
+
+        Pattern words = Pattern.compile("\\S+");
+        Pattern urls = Pattern.compile("(https*|ftp|git):");
+        StringBuffer sb = new StringBuffer();
+        Matcher m = words.matcher(cmdLine);
+        while (m.find()) {
+          String item = m.group();
+          if (!urls.matcher(item).find()) {
+            // Not sure if File.separator is right if executing on slave with OS different from master's one
+            //String cmdLine = commandLine.replaceAll("[/\\\\]", File.separator);
+            m.appendReplacement(sb, Matcher.quoteReplacement(item.replaceAll(match, replacement)));
+          }
+        }
+        m.appendTail(sb);
+
+        return sb.toString();
+      }
+    
+    /**
+     * Convert Windows-style environment variables to UNIX-style.
+     * E.g. "script --opt=%OPT%" to "script --opt=$OPT"
+     *
+     * @param cmdLine The command line with Windows-style env vars to convert.
+     * @return The command line with UNIX-style env vars.
+     */
+    public static String convertEnvVarsToUnix(String cmdLine) {
+      if (cmdLine == null) {
+        return null;
+      }
+
+      StringBuffer sb = new StringBuffer();
+
+      Matcher m = WIN_ENV_VAR_REGEX.matcher(cmdLine);
+      while (m.find()) {
+        m.appendReplacement(sb, "\\$$1");
+      }
+      m.appendTail(sb);
+
+      return sb.toString();
+    }
+
+    /**
+     * Convert UNIX-style environment variables to Windows-style.
+     * E.g. "script --opt=$OPT" to "script --opt=%OPT%"
+     *
+     * @param cmdLine The command line with Windows-style env vars to convert.
+     * @return The command line with UNIX-style env vars.
+     */
+    public static String convertEnvVarsToWindows(String cmdLine) {
+      if (cmdLine == null) {
+        return null;
+      }
+
+      StringBuffer sb = new StringBuffer();
+
+      Matcher m = UNIX_ENV_VAR_REGEX.matcher(cmdLine);
+      while (m.find()) {
+        m.appendReplacement(sb, "%$1%");
+      }
+      m.appendTail(sb);
+
+      return sb.toString();
+    }
 }
+
 
