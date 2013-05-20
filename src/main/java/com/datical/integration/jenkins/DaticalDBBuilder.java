@@ -18,6 +18,7 @@ import org.kohsuke.stapler.QueryParameter;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -91,14 +92,6 @@ public class DaticalDBBuilder extends Builder {
 		String UNIX_SEP = "/";
 		String WINDOWS_SEP = "\\";
 		
-		String daticalCmd = getDescriptor().getDaticalDBInstallDir() + "\\repl\\hammer.bat";
-		String daticalDriversArg = "--drivers=" + getDescriptor().getDaticalDBDriversDir();
-		String daticalProjectArg = "--project=" + daticalProjectDir;
-		
-		String commandLine = daticalCmd + " " + daticalDriversArg + " " + daticalProjectArg + " " + "checkdrivers";
-		
-		
-		
         // This is where you 'build' the project.
         // Since this is a dummy, we just say 'hello world' and call that a build.
 
@@ -122,12 +115,14 @@ public class DaticalDBBuilder extends Builder {
         listener.getLogger().println("build.getWorkspace().toString() = " + build.getWorkspace());
         
         
-        // possible actions
-//        Forecast
-//        Snapshot
-//        Deploy
-//        Rollback
 
+		String daticalCmd = getDescriptor().getDaticalDBInstallDir() + "\\repl\\hammer.bat";
+		String daticalDriversArg = "--drivers=" + getDescriptor().getDaticalDBDriversDir();
+		String daticalProjectArg = "--project=" + daticalProjectDir;
+		
+		String commandLine = daticalCmd + " " + "\"" + daticalDriversArg + "\"" + " " + "\"" + daticalProjectArg + "\"" + " " + getDaticalDBActionForCmd(daticalDBAction, daticalDBServer);
+		
+		
         
         
 
@@ -188,7 +183,38 @@ public class DaticalDBBuilder extends Builder {
         //return true;
     }
 
-    // Overridden for better type safety.
+	private String getDaticalDBActionForCmd(String daticalDBAction, String daticalDBServer) {
+
+		// See config.jelly for all options used.
+		String daticalDBActionForCmd = null;
+		
+		if (daticalDBAction.equals("forecast")) {
+			
+			daticalDBActionForCmd = daticalDBAction + " " + "\"" + daticalDBServer + "\"" ;
+			
+		} else if (daticalDBAction.equals("snapshot")) {
+			
+			daticalDBActionForCmd = daticalDBAction + " " + "\"" + daticalDBServer + "\"" ;
+			
+		} else if (daticalDBAction.equals("deploy")) {
+			
+			daticalDBActionForCmd = daticalDBAction + " " + "\"" + daticalDBServer + "\"" ;
+			
+		} else if (daticalDBAction.equals("status")) {
+			
+			daticalDBActionForCmd = daticalDBAction + " " + "\"" + daticalDBServer + "\"" ;
+			
+		} else if (daticalDBAction.equals("checkdrivers")) {
+			
+			daticalDBActionForCmd = daticalDBAction;
+			
+		}
+		
+		return daticalDBActionForCmd;
+
+	}
+
+	// Overridden for better type safety.
     // If your plugin doesn't really define any property on Descriptor,
     // you don't have to do this.
     @Override

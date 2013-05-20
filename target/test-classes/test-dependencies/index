@@ -1,5 +1,5 @@
-javadoc
-maven-plugin
-ant
 ui-samples-plugin
+ant
+maven-plugin
+javadoc
 subversion

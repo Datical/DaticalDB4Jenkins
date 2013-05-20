@@ -23,10 +23,18 @@
 
   <f:entry title="Action" name="daticalDBAction" field="daticalDBAction">
   	<select name="daticalDBAction">
-        <option value="Forecast">Forecast</option>
-        <option value="Snapshot">Snapshot</option>
-        <option value="Snapshot">Deploy</option>
-        <option value="Snapshot">Rollback</option>
+        <option value="forecast">Forecast</option>
+        <option value="snapshot">Snapshot</option>
+        <option value="deploy">Deploy</option>
+        <option value="status">Status</option>
+        <option value="checkdrivers">Check Database Drivers</option>
+        <!--
+        TODO: need to add the count value to propertly do rollback
+        
+        rollback <database> count:<n>
+        
+        <option value="rollback">Rollback</option>
+        -->
     </select>
   </f:entry>
   
