@@ -160,7 +160,7 @@ public class DaticalDBBuilder extends Builder {
 		}
         env.putAll(build.getBuildVariables());
 
-        listener.getLogger().println("Environment variables: " + env.entrySet().toString());
+        //listener.getLogger().println("Environment variables: " + env.entrySet().toString());
         listener.getLogger().println("Command line: " + args.toStringWithQuote());
         listener.getLogger().println("Working directory: " + build.getWorkspace());
 
