@@ -9,7 +9,7 @@ Group-Id: com.datical.integration.jenkins
 Short-Name: DaticalDB4Jenkins
 Long-Name: DaticalDB4Jenkins
 Url: http://jenkins-ci.org/plugin/DaticalDB4Jenkins/
-Plugin-Version: 1.0-SNAPSHOT (private-05/21/2013 12:19-r2)
+Plugin-Version: 1.0-SNAPSHOT (private-05/28/2013 13:25-r2)
 Hudson-Version: 1.480.3
 Jenkins-Version: 1.480.3
 Plugin-Developers: 

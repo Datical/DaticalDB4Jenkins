@@ -3,11 +3,11 @@ Group-Id: com.datical.integration.jenkins
 Short-Name: DaticalDB4Jenkins
 Long-Name: DaticalDB4Jenkins
 Url: http://jenkins-ci.org/plugin/DaticalDB4Jenkins/
-Plugin-Version: 1.0-SNAPSHOT (private-05/21/2013 12:19-r2)
+Plugin-Version: 1.0-SNAPSHOT (private-05/28/2013 13:26-r2)
 Hudson-Version: 1.480.3
 Jenkins-Version: 1.480.3
-Plugin-Dependencies: ant:1.1,maven-plugin:1.480.3,subversion:1.26,ui-s
- amples-plugin:1.480.3,javadoc:1.0
+Plugin-Dependencies: ant:1.1,ui-samples-plugin:1.480.3,subversion:1.26
+ ,maven-plugin:1.480.3,javadoc:1.0
 Plugin-Developers: 
 Libraries: C:\dev\workspace.indigo\DaticalDB4Jenkins\target\classes,C:
  \Users\r2\.m2\repository\org\jenkins-ci\main\jenkins-war\1.480.3\jenk

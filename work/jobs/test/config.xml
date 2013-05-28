@@ -26,38 +26,32 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <com.datical.integration.jenkins.DaticalDBBuilder>
-      <name>check db drivers</name>
-      <daticalProjectDir>.</daticalProjectDir>
+      <daticalDBProjectDir>.</daticalDBProjectDir>
       <daticalDBServer></daticalDBServer>
       <daticalDBAction>checkdrivers</daticalDBAction>
     </com.datical.integration.jenkins.DaticalDBBuilder>
     <com.datical.integration.jenkins.DaticalDBBuilder>
-      <name>status (no db server)</name>
-      <daticalProjectDir>.</daticalProjectDir>
+      <daticalDBProjectDir>.</daticalDBProjectDir>
       <daticalDBServer></daticalDBServer>
       <daticalDBAction>status</daticalDBAction>
     </com.datical.integration.jenkins.DaticalDBBuilder>
     <com.datical.integration.jenkins.DaticalDBBuilder>
-      <name>status (with db server)</name>
-      <daticalProjectDir>.</daticalProjectDir>
+      <daticalDBProjectDir>.</daticalDBProjectDir>
       <daticalDBServer>Integration Dev</daticalDBServer>
       <daticalDBAction>status</daticalDBAction>
     </com.datical.integration.jenkins.DaticalDBBuilder>
     <com.datical.integration.jenkins.DaticalDBBuilder>
-      <name>forecast</name>
-      <daticalProjectDir>.</daticalProjectDir>
+      <daticalDBProjectDir>.</daticalDBProjectDir>
       <daticalDBServer>Integration Dev</daticalDBServer>
       <daticalDBAction>forecast</daticalDBAction>
     </com.datical.integration.jenkins.DaticalDBBuilder>
     <com.datical.integration.jenkins.DaticalDBBuilder>
-      <name>snapshot</name>
-      <daticalProjectDir>.</daticalProjectDir>
+      <daticalDBProjectDir>.</daticalDBProjectDir>
       <daticalDBServer>Integration Dev</daticalDBServer>
       <daticalDBAction>snapshot</daticalDBAction>
     </com.datical.integration.jenkins.DaticalDBBuilder>
     <com.datical.integration.jenkins.DaticalDBBuilder>
-      <name>deploy</name>
-      <daticalProjectDir>.</daticalProjectDir>
+      <daticalDBProjectDir>.</daticalDBProjectDir>
       <daticalDBServer>Integration Dev</daticalDBServer>
       <daticalDBAction>deploy</daticalDBAction>
     </com.datical.integration.jenkins.DaticalDBBuilder>

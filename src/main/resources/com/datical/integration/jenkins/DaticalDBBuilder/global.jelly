@@ -12,10 +12,6 @@
     so it should be straightforward to find them.
   -->
   <f:section title="Datical DB">
-    <f:entry title="French" field="useFrench"
-      description="Check if we should say hello in French">
-      <f:checkbox />
-    </f:entry>
     <f:entry title="Installation Directory" field="daticalDBInstallDir"
     	description="Absolute Path on Build Server to Datical DB Installation Directory">
     	<f:textbox />
