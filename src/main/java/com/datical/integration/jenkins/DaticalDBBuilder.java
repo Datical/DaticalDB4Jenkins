@@ -35,7 +35,8 @@ public class DaticalDBBuilder extends Builder {
 
 	private final String daticalDBProjectDir;
 	private final String daticalDBServer;
-	private final String daticalDBAction; // Forecast, Snapshot, Deploy, Rollback
+	private final String daticalDBAction; // Forecast, Snapshot, Deploy,
+											// Rollback
 
 	// Fields in config.jelly must match the parameter names in the
 	// "DataBoundConstructor"
@@ -78,14 +79,14 @@ public class DaticalDBBuilder extends Builder {
 		listener.getLogger().println("Datical DB Action = " + daticalDBAction);
 
 		String daticalCmd = getDescriptor().getDaticalDBInstallDir() + "\\repl\\hammer";
+		if (!launcher.isUnix()) {
+			daticalCmd = daticalCmd + ".bat";
+		}
 		String daticalDriversArg = "--drivers=" + getDescriptor().getDaticalDBDriversDir();
 		String daticalProjectArg = "--project=" + daticalDBProjectDir;
 
 		String commandLine = daticalCmd + " " + "\"" + daticalDriversArg + "\"" + " " + "\"" + daticalProjectArg + "\"" + " " + getDaticalDBActionForCmd(daticalDBAction, daticalDBServer);
 		String cmdLine = convertSeparator(commandLine, (launcher.isUnix() ? UNIX_SEP : WINDOWS_SEP));
-		if (!launcher.isUnix()) {
-			cmdLine = cmdLine + ".bat";
-		}
 
 		listener.getLogger().println("File separators sanitized: " + cmdLine);
 
@@ -205,8 +206,9 @@ public class DaticalDBBuilder extends Builder {
 		private String daticalDBInstallDir;
 		private String daticalDBDriversDir;
 
-		public void load() {
-		}
+		public DescriptorImpl() {
+            load();
+        }
 
 		public FormValidation doCheckDaticalDBInstallDir(@QueryParameter String value) throws IOException, ServletException {
 

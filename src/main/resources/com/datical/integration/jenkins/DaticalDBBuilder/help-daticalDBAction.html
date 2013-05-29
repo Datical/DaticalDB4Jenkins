@@ -1,6 +1,13 @@
 <div>
-  help-daticalDBAction.html - This HTML fragment will be injected into the configuration screen
-  when the user clicks the 'help' icon. See global.jelly for how the
-  form decides which page to load.
-  You can have any <tt>HTML</tt> fragment here.
+	The Datical DB Action is the action you wish Datical DB to perform.
+	<br>
+	This can include the following:
+
+	<li>Forecast - provides a report detail the changes, if any, that will be applied to your database along with impact analysis. This does NOT commit changes to your database. This file will be stored in your build workspace. Requires DB Server specification.
+	<li>Snapshot - reverse engineers your database schema to a Datical DB XML file. This file will be stored in your build workspace. Requires DB Server specification.
+	<li>Deploy - executes any changes required as detailed in your Project. This will generate a report detailing the chnages and be stored in your build workspace. Requires DB Server specification.  
+	<li>Status - details the current status of the database in relation to your Project. DB Server specification is optional.
+	<li>Check Drivers - validates the appropriate JDBC driver is available to Datical DB for your specific Project. The location of the drivers is specified in the Jenkins global config. (Jenkins --> Manage Jenkins --> Configure System --> Datical DB)
+			
+
 </div>
