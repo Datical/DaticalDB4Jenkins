@@ -6,6 +6,7 @@ import hudson.Extension;
 import hudson.Util;
 import hudson.util.ArgumentListBuilder;
 import hudson.util.FormValidation;
+import hudson.util.ListBoxModel;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
 import hudson.model.AbstractProject;
@@ -34,8 +35,7 @@ public class DaticalDBBuilder extends Builder {
 
 	private final String daticalDBProjectDir;
 	private final String daticalDBServer;
-	private final String daticalDBAction; // Forecast, Snapshot, Deploy,
-											// Rollback
+	private final String daticalDBAction; // Forecast, Snapshot, Deploy, Rollback
 
 	// Fields in config.jelly must match the parameter names in the
 	// "DataBoundConstructor"
@@ -205,23 +205,31 @@ public class DaticalDBBuilder extends Builder {
 		private String daticalDBInstallDir;
 		private String daticalDBDriversDir;
 
-		
-		public void load() {}
-		
-		/**
-		 * Performs on-the-fly validation of the form field
-		 * 'daticalDBProjectDir'.
-		 * 
-		 * @param value
-		 *            This parameter receives the value that the user has typed.
-		 * @return Indicates the outcome of the validation. This is sent to the
-		 *         browser.
-		 */
-		public FormValidation doCheckDaticalProjectDir(@QueryParameter String value) throws IOException, ServletException {
+		public void load() {
+		}
+
+		public FormValidation doCheckDaticalDBInstallDir(@QueryParameter String value) throws IOException, ServletException {
+
+			if (value.length() == 0)
+				return FormValidation.error("Please set the Datical DB Installation Directory");
+			return FormValidation.ok();
+
+		}
+
+		public FormValidation doCheckDaticalDBDriversDir(@QueryParameter String value) throws IOException, ServletException {
+
+			if (value.length() == 0)
+				return FormValidation.error("Please set the Datical DB Drivers Directory");
+			return FormValidation.ok();
+
+		}
+
+		public FormValidation doCheckDaticalDBProjectDir(@QueryParameter String value) throws IOException, ServletException {
 
 			if (value.length() == 0)
 				return FormValidation.error("Please set the Datical DB Project Directory");
 			return FormValidation.ok();
+
 		}
 
 		public boolean isApplicable(Class<? extends AbstractProject> aClass) {

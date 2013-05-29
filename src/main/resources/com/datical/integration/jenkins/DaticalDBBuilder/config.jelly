@@ -14,20 +14,12 @@
   </f:entry>
 
   <f:entry title="Action" name="daticalDBAction" field="daticalDBAction">
-  	<select name="daticalDBAction">
-        <option value="forecast">Forecast</option>
-        <option value="snapshot">Snapshot</option>
-        <option value="deploy">Deploy</option>
-        <option value="status">Status</option>
-        <option value="checkdrivers">Check Database Drivers</option>
-        <!--
-        TODO: need to add the count value to properly do rollback
-        
-        rollback <database> count:<n>
-        
-        <option value="rollback">Rollback</option>
-        -->
-    </select>
+  	<f:radio name="daticalDBAction" value="forecast" title="Forecast" checked="${if (instance.getDaticalDBAction().compareTo('forecast')==0) true; else false;}"/>
+  	<f:radio name="daticalDBAction" value="snapshot" title="Snapshot" checked="${if (instance.getDaticalDBAction().compareTo('snapshot')==0) true; else false;}"/>
+  	<f:radio name="daticalDBAction" value="deploy" title="Deploy" checked="${if (instance.getDaticalDBAction().compareTo('deploy')==0) true; else false;}"/>
+  	<f:radio name="daticalDBAction" value="status" title="Status" checked="${if (instance.getDaticalDBAction().compareTo('status')==0) true; else false;}"/>
+  	<f:radio name="daticalDBAction" value="checkdrivers" title="Check Drivers" checked="${if (instance.getDaticalDBAction().compareTo('checkdrivers')==0) true; else false;}"/>
   </f:entry>
   
+
 </j:jelly>
