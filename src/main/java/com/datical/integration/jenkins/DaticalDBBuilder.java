@@ -6,7 +6,6 @@ import hudson.Extension;
 import hudson.Util;
 import hudson.util.ArgumentListBuilder;
 import hudson.util.FormValidation;
-import hudson.util.ListBoxModel;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
 import hudson.model.AbstractProject;
@@ -18,6 +17,8 @@ import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.QueryParameter;
 
 import javax.servlet.ServletException;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,10 +79,21 @@ public class DaticalDBBuilder extends Builder {
 		listener.getLogger().println("Datical DB Server = " + daticalDBServer);
 		listener.getLogger().println("Datical DB Action = " + daticalDBAction);
 
+		// construct the command
 		String daticalCmd = getDescriptor().getDaticalDBInstallDir() + "\\repl\\hammer";
 		if (!launcher.isUnix()) {
 			daticalCmd = daticalCmd + ".bat";
 		}
+		File daticalCmdFile = new File(daticalCmd);
+		if (!daticalCmdFile.exists()) {
+			// might have used the CLI installer, so let's get rid of the "repl"
+			daticalCmd = getDescriptor().getDaticalDBInstallDir() + "\\hammer";
+			if (!launcher.isUnix()) {
+				daticalCmd = daticalCmd + ".bat";
+			}
+		}
+		
+		
 		String daticalDriversArg = "--drivers=" + getDescriptor().getDaticalDBDriversDir();
 		String daticalProjectArg = "--project=" + daticalDBProjectDir;
 
