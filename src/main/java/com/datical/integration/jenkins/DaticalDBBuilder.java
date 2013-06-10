@@ -111,8 +111,6 @@ public class DaticalDBBuilder extends Builder {
 
 		ArgumentListBuilder args = new ArgumentListBuilder();
 		if (cmdLine != null) {
-			// args.addTokenized((launcher.isUnix() && executeFromWorkingDir) ?
-			// "./" + cmdLine : cmdLine);
 			args.addTokenized((launcher.isUnix()) ? "./" + cmdLine : cmdLine);
 			listener.getLogger().println("Execute from working directory: " + args.toStringWithQuote());
 		}
@@ -125,17 +123,17 @@ public class DaticalDBBuilder extends Builder {
 		EnvVars env = null;
 		try {
 			env = build.getEnvironment(listener);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (IOException e) {
+			final String errorMessage = "Unable to find environment variables.";
+			e.printStackTrace(listener.fatalError(errorMessage));
+			return false;
+		} catch (InterruptedException e) {
+			final String errorMessage = "Unable to find environment variables.";
+			e.printStackTrace(listener.fatalError(errorMessage));
+			return false;
 		}
 		env.putAll(build.getBuildVariables());
 
-		// listener.getLogger().println("Environment variables: " +
-		// env.entrySet().toString());
 		listener.getLogger().println("Command line: " + args.toStringWithQuote());
 		listener.getLogger().println("Working directory: " + build.getWorkspace());
 
@@ -153,7 +151,6 @@ public class DaticalDBBuilder extends Builder {
 			return false;
 		}
 
-		// return true;
 	}
 
 	private String getDaticalDBActionForCmd(String daticalDBAction, String daticalDBServer) {
