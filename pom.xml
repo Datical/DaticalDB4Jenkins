@@ -10,7 +10,7 @@
 
 	<groupId>com.datical.integration.jenkins</groupId>
 	<artifactId>DaticalDB4Jenkins</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>hpi</packaging>
 
 	<description>Provides easy access to Datical DB in Jenkins</description>
