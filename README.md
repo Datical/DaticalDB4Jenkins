@@ -1,8 +1,6 @@
 DaticalDB4Jenkins
 =================
 
-This is a change.
+Please visit the Jenkins fork for the latest and greatest. 
 
-Here's another changes.
-
-Yet another change.
+https://github.com/jenkinsci/datical-db-plugin
